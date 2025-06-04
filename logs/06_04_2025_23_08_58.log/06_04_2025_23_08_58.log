@@ -1,0 +1,4 @@
+[2025-06-04 23:08:58,504] 19 root - INFO - Logging has been set up successfully.
+[2025-06-04 23:08:58,504] 20 root - ERROR - This is an error message for testing purposes.
+[2025-06-04 23:08:58,504] 21 root - WARNING - This is a warning message for testing purposes.
+[2025-06-04 23:08:58,505] 23 root - CRITICAL - This is a critical message for testing purposes.

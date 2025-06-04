@@ -19,9 +19,9 @@ def get_requirements(file_path: str) -> List[str]:
     
 setup(
     name='Cryptocurrency Liquidity Prediction',
-    version='0.0.1',
+    version='0.1.0',
     author='Jay Tamkhane',
     author_email='jaytamkhane161@gmail.com',
-    install_requires=get_requirements('requirements.txt'),
     packages=find_packages(),
+    install_requires=get_requirements('requirements.txt')
 )
