@@ -42,7 +42,19 @@ class ModelTrainer:
                 "CatBoost": CatBoostRegressor(verbose=0)
             }
 
-            model_report:dict = evaluate_models(X=X_train, y=y_train, X_test=X_test, y_test=y_test, models=models)
+            params = {
+                "Linear Regression": {},
+                "Decision Tree": {"max_depth": [5]},  # already correct
+                "Random Forest": {"n_estimators": [100], "max_depth": [10]},  # wrap 100 in list
+                "Gradient Boosting": {"n_estimators": [100], "learning_rate": [0.1]},  # wrap scalar in list
+                "AdaBoost": {"n_estimators": [50], "learning_rate": [1.0]},  # wrap scalars
+                "KNeighbors": {"n_neighbors": [5]},  # wrap scalar in list
+                "SVR": {"kernel": ['rbf'], "C": [1.0], "gamma": ['scale']},  # wrap scalars in lists
+                "XGBoost": {"n_estimators": [100], "learning_rate": [0.1]},  # wrap scalars
+                "CatBoost": {"iterations": [1000], "learning_rate": [0.1]}  # wrap scalars
+            }
+
+            model_report:dict = evaluate_models(X=X_train, y=y_train, X_test=X_test, y_test=y_test, models=models, params=params)
             logging.info("Starting model training")
 
             best_model_score = max(model_report.values(), key=lambda x: x['R2 Score'])
@@ -53,6 +65,9 @@ class ModelTrainer:
 
             if best_model_score['R2 Score'] < 0.6:
                 raise CustomException("No suitable model found with R2 Score above 0.6", sys)
+            
+            best_model.fit(X_train, y_train)
+
             logging.info("Best model found and validated")
 
             
