@@ -4,6 +4,7 @@ import dill
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import mean_squared_error, r2_score
 
 from src.exception import CustomException
 from src.logger import logging
@@ -16,5 +17,32 @@ def save_object(file_path: str, obj: object):
         with open(file_path, 'wb') as file_obj:
             dill.dump(obj, file_obj)
         logging.info(f"Object saved at {file_path}")
+    except Exception as e:
+        raise CustomException(e, sys)
+
+def evaluate_models(X, y, X_test, y_test, models):
+    try:
+        report = {}
+        
+        for i in range(len(list(models))):
+            model_name = list(models.keys())[i]
+            model = models[model_name]
+            
+            # Fit the model
+            model.fit(X, y)
+            
+            # Predict on test data
+            y_pred = model.predict(X_test)
+            
+            # Calculate metrics
+            mse = mean_squared_error(y_test, y_pred)
+            r2 = r2_score(y_test, y_pred)
+            
+            report[model_name] = {
+                "MSE": mse,
+                "R2 Score": r2
+            }
+
+        return report
     except Exception as e:
         raise CustomException(e, sys)

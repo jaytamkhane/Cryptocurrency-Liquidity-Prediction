@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import os
 import sys
 from src.exception import CustomException
@@ -9,6 +10,10 @@ from dataclasses import dataclass
 
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
+
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
 
 @dataclass
 class DataIngestionConfig:
@@ -58,8 +63,39 @@ class DataIngestion:
             raise CustomException(e, sys)
 
 if __name__ == "__main__":
+    # Step 1: Ingest data
     obj = DataIngestion()
-    train_data, test_data, raw_data = obj.initiate_data_ingestion()
-    
+    train_data_path, test_data_path, raw_data_path = obj.initiate_data_ingestion()
+
+    # Step 2: Transform data
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    X_train, y_train, X_test, y_test, preprocessor_path = data_transformation.initiate_data_transformation(
+        train_data_path, test_data_path
+    )
+
+    # ✅ Step 2.5: Remove rows with NaN in y_train or y_test
+    import numpy as np
+    if np.isnan(y_train).any() or np.isnan(y_test).any():
+
+        train_valid_idx = ~np.isnan(y_train)
+        test_valid_idx = ~np.isnan(y_test)
+
+        X_train = X_train[train_valid_idx]
+        y_train = y_train[train_valid_idx]
+
+        X_test = X_test[test_valid_idx]
+        y_test = y_test[test_valid_idx]
+
+    # Step 3: Combine X and y into arrays
+    train_array = np.c_[X_train, y_train]
+    test_array = np.c_[X_test, y_test]
+
+    # Step 4: Model training
+    model_trainer = ModelTrainer()
+    best_model_name, model_report, mse, r2 = model_trainer.initiate_model_trainer(
+        train_array, test_array, preprocessor_path
+    )
+
+print(f"Best model: {best_model_name}")
+print(f"Mean Squared Error: {mse}")
+print(f"R2 Score: {r2}")
