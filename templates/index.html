@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crypto Liquidity Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>🚀 Crypto Liquidity Predictor</h1>
+  <div class="container">
+    <form method="post" action="/predict">
+      <label>Price:</label><input type="number" step="any" name="price" required>
+      <label>1h %:</label><input type="number" step="any" name="h1" required>
+      <label>24h %:</label><input type="number" step="any" name="h24" required>
+      <label>7d %:</label><input type="number" step="any" name="d7" required>
+      <label>24h Volume:</label><input type="number" step="any" name="volume_24h" required>
+      <label>Market Cap:</label><input type="number" step="any" name="mkt_cap" required>
+      <label>Price Change Ratio:</label><input type="number" step="any" name="price_change_ratio" required>
+      <label>Volume to Price:</label><input type="number" step="any" name="volume_to_price" required>
+      <label>Is Stable Coin (0 or 1):</label><input type="number" step="1" name="is_stable_coin" required>
+      <input type="submit" value="🔮 Predict Liquidity">
+    </form>
+  </div>
+  <footer>Built by Jay • Flask + ML + Crypto 💸</footer>
+</body>
+</html>
