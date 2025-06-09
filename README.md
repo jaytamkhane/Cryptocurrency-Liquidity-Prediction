@@ -84,19 +84,27 @@ Trained several regressors:
 
 ```
 Cryptocurrency-Liquidity-Prediction/
-├── artifacts/
-├── build/lib/src/
-├── catboost_info/
-├── dist/
-├── logs/
+├── artifacts/ # Saved models, datasets
+│ ├── model.pkl
+│ ├── preprocessor.pkl
+│ ├── data.csv, train.csv, test.csv
 ├── notebook/
-├── src/                  # Core logic: data, models, pipelines
-├── static/               # Static assets
-├── templates/            # HTML for Flask app
-├── app.py                # Flask application
-├── render.yaml           # Render deployment config
-├── requirements.txt
-├── runtime.txt
+│ ├── EDA.ipynb
+│ └── MODEL TRAINING.ipynb
+│ └── data/
+├── src/
+│ ├── components/
+│ │ ├── data_ingestion.py
+│ │ ├── data_transformation.py
+│ │ └── model_trainer.py
+│ ├── pipeline/
+│ │ ├── predict_pipeline.py
+│ │ └── init.py
+│ ├── logger.py, utils.py, exception.py
+├── templates/ # HTML frontend
+├── static/ # Static CSS
+├── app.py # Flask app
+├── render.yaml, runtime.txt, requirements.txt
 ├── setup.py
 └── README.md
 ```
